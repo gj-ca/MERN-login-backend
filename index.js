@@ -69,7 +69,7 @@ app.post("/users/register", (req, res) => {
 // 1: strategy
 // 2: Callback
 app.post("/users/login", (req, res, next) => {
-    console.log("Trying to login")
+    console.log("loggin in")
     passport.authenticate("local", (err, user) => {
         if (err) {
             console.log(err)
@@ -82,6 +82,7 @@ app.post("/users/login", (req, res, next) => {
             // "login"
             req.logIn(user, (error) => {
                 if (error) throw error
+                console.log(user)
                 res.send({username: user.username})
             })
         }
