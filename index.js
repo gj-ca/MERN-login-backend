@@ -57,8 +57,7 @@ app.post("/users/register", (req, res) => {
             res.sendStatus(400)
         }
         passport.authenticate('local')(req, res, () => {
-            console.log(user)
-            res.send(user)
+            res.send({username: user.username})
         })
         // Session management
         // Send back session, user
@@ -81,9 +80,23 @@ app.post("/users/login", (req, res, next) => {
         } else {
             // No error, user found
             // "login"
-            res.sendStatus(200)
+            req.logIn(user, (error) => {
+                if (error) throw error
+                res.send({username: user.username})
+            })
         }
     })(req, res, next)
+})
+
+app.get("/users/me", (req, res) => {
+    // find the user
+    // send back the user
+    console.log("Hitting /me")
+    if (req.user) {
+        res.send({username: req.user.username})
+    } else {
+        res.send({username: null})
+    }
 })
 
 app.listen(5000, () => {
